@@ -10,6 +10,10 @@ describe('DynamicComponent', () => {
             expect(screen.getByRole('link', { name: 'Home' })).toBeVisible()
             expect(screen.getByRole('link')).toHaveAttribute('href', '/home')
         })
+        it('renders a link with a custom class name', () => {
+            render(<DynamicComponent as="a" href="/home" className='className-prop'>Home</DynamicComponent>)
+            expect(screen.getByRole('link', { name: 'Home' })).toHaveClass('className-prop')
+        })
     });
     describe('Dynamic Button', () => {
         const mockOnClick = vi.fn()
@@ -18,6 +22,10 @@ describe('DynamicComponent', () => {
             expect(screen.getByRole('button', { name: 'Click' })).toBeVisible()
             fireEvent.click(screen.getByRole('button'))
             expect(mockOnClick).toHaveBeenCalledTimes(1)
+        })
+        it('renders a button with a custom class name', () => {
+            render(<DynamicComponent as="button" onClick={mockOnClick} className='className-prop'>Click</DynamicComponent>)
+            expect(screen.getByRole('button', { name: 'Click' })).toHaveClass('className-prop')
         })
     });
 })
