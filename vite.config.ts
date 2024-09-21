@@ -7,5 +7,9 @@ export default defineConfig({
   test: {
     // 👋 add the line below to add jsdom to vite
     environment: 'jsdom',
+    setupFiles: ['./src/tests/setup.ts'],
+    include: ['**/*.test.tsx', '**/*.test.ts'],
+    globals: true,
+    disableConsoleIntercept: true
   }
 })
