@@ -1,34 +1,33 @@
-import React from 'react';
+import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 type CommonProps = {
-  children: React.ReactNode;
   className?: string;
 };
 
-type LinkProps = CommonProps & {
+type LinkProps = CommonProps & AnchorHTMLAttributes<HTMLAnchorElement> & {
   as: 'a';
-  href: string;
 };
 
-type ButtonProps = CommonProps & {
+type ButtonProps = CommonProps & ButtonHTMLAttributes<HTMLButtonElement> & {
   as: 'button';
-  onClick: () => void;
 };
 
-type PolymorphicProps = LinkProps | ButtonProps;
+type PolymorphicOverloadProps = LinkProps | ButtonProps;
 
-export const DynamicComponent: React.FC<PolymorphicProps> = (props) => {
-  if (props.as === 'a') {
+export function DynamicComponent(props: PropsWithChildren<LinkProps>): JSX.Element;
+export function DynamicComponent(props: PropsWithChildren<ButtonProps>): JSX.Element;
+export function DynamicComponent({ as, className, children, ...restProps }: PropsWithChildren<PolymorphicOverloadProps>) {
+  if (as === 'a' && 'href' in restProps) {
     return (
-      <a href={props.href} className={props.className}>
-        {props.children}
+      <a className={className} {...restProps}>
+        {children}
       </a>
     );
-  } else {
+  } else if (as === 'button' && 'onClick' in restProps) {
     return (
-      <button onClick={props.onClick} className={props.className}>
-        {props.children}
+      <button className={className} {...restProps}>
+        {children}
       </button>
     );
-  }
-};
+  } else return null
+}

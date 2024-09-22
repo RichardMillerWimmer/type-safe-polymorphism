@@ -28,4 +28,10 @@ describe('DynamicComponent', () => {
             expect(screen.getByRole('button', { name: 'Click' })).toHaveClass('className-prop')
         })
     });
+    it('returns null when conditions are not met', () => {
+        render(<DynamicComponent as="a">Home</DynamicComponent>)
+        expect(screen.queryByRole('link', { name: 'Home' })).toBeNull()
+        render(<DynamicComponent as="button">Click</DynamicComponent>)
+        expect(screen.queryByRole('button', { name: 'Click' })).toBeNull()
+    })
 })
